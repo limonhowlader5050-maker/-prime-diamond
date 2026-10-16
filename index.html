@@ -1,1 +1,125 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="PRIME DIAMOND premium Free Fire diamond top-up shop.">
+<title>PRIME DIAMOND | Top-Up Store</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:#fff;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 15px;border-bottom:1px solid #4c3a1b}
+.logo{color:#f4cd70;font-size:20px;font-weight:900}
+.sub{font-size:9px;letter-spacing:2px;color:#aaa;margin-top:5px}
+.login{border:1px solid #b68d3d;color:#f4cd70;padding:10px;border-radius:9px}
+.hero{text-align:center;padding:32px 15px;background:radial-gradient(ellipse at top,#3b2b10,#090909 75%)}
+.hero small{color:#f4cd70;letter-spacing:3px}
+h1{font-size:32px;margin:15px 0}
+h1 span{color:#f4cd70}
+.hero p{color:#aaa;font-size:13px;line-height:1.7}
+main{max-width:600px;margin:auto;padding:12px 14px 30px}
+.card{background:#151515;border:1px solid #393020;border-radius:14px;padding:16px;margin:14px 0}
+h2{font-size:17px;margin:0 0 16px}
+.num{display:inline-grid;place-items:center;background:#f4cd70;color:#111;border-radius:50%;width:27px;height:27px;margin-right:7px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pack{background:#202020;border:1px solid #45403a;border-radius:10px;color:white;padding:17px 4px;cursor:pointer}
+.pack.active,.pay.active{border:2px solid #f4cd70;background:#2d2516}
+.price{color:#f4cd70;font-weight:bold;margin-top:8px}
+input{width:100%;padding:14px;background:#222;border:1px solid #494033;border-radius:9px;color:white;font-size:15px}
+.pay{padding:14px;background:#222;color:white;border:1px solid #494033;border-radius:9px}
+button{cursor:pointer;font-size:14px}
+.hint{font-size:12px;color:#aaa;line-height:1.6}
+.gold{width:100%;padding:15px;border:0;border-radius:9px;background:linear-gradient(100deg,#bd9139,#ffe39b);font-weight:bold;color:#111}
+#message{font-size:13px;color:#f4cd70;line-height:1.6;overflow-wrap:anywhere}
+nav{position:sticky;bottom:0;background:#111;border-top:1px solid #40351d;display:flex;justify-content:space-around;padding:13px 3px;color:#e5c474;font-size:12px}
+footer{text-align:center;color:#888;padding:22px;font-size:12px;line-height:1.8}
+</style>
+</head>
+<body>
+<header>
+ <div><div class="logo">✦ PRIME DIAMOND</div><div class="sub">PREMIUM GAMING STORE</div></div>
+ <div class="login">GAMING</div>
+</header>
+<section class="hero">
+ <small>LEVEL UP YOUR GAME</small>
+ <h1>DIAMONDS <span>AWAIT</span></h1>
+ <p>Your gaming journey starts here.<br>Select a package and prepare your order.</p>
+</section>
+<main>
+ <section class="card">
+  <h2><span class="num">1</span>Select Recharge</h2>
+  <div class="grid" id="packages"></div>
+  <p class="hint">নমুনা মূল্য — আসল মূল্য যাচাই করে আপডেট করতে হবে।</p>
+ </section>
+ <section class="card">
+  <h2><span class="num">2</span>Player ID</h2>
+  <input id="uid" inputmode="numeric" maxlength="25" placeholder="Enter Free Fire Player UID">
+  <p class="hint">UID lookup এখনো সংযুক্ত নয়। গেমের নাম স্বয়ংক্রিয়ভাবে আসবে না।</p>
+ </section>
+ <section class="card">
+  <h2><span class="num">3</span>Payment Method</h2>
+  <div class="grid">
+   <button class="pay active" data-pay="Nagad">Nagad</button>
+   <button class="pay" data-pay="bKash">bKash</button>
+  </div>
+  <p class="hint">পেমেন্ট এখনো চালু নয়। এই ডেমোতে টাকা পাঠাবেন না।</p>
+ </section>
+ <section class="card">
+  <h2>Order Summary</h2>
+  <p id="summary">25 Diamonds · ৳20</p>
+  <button class="gold" id="order">CONTINUE →</button>
+  <p id="message" aria-live="polite"></p>
+ </section>
+</main>
+<nav><span>⌂ Home</span><span>▷ Tutorial</span><span>◇ TopUp</span><span>♧ Support</span></nav>
+<footer><b style="color:#f4cd70">PRIME DIAMOND</b><br>Independent demo store. Not affiliated with Garena.<br>Real payment and delivery are not connected.</footer>
+<script>
+const packs=[
+["25 Diamond",20],["50 Diamond",35],
+["100 Diamond",70],["115 Diamond",78],
+["240 Diamond",155],["355 Diamond",233],
+["480 Diamond",310],["505 Diamond",330],
+["610 Diamond",395],["850 Diamond",550],
+["1090 Diamond",705],["1240 Diamond",790],
+["1850 Diamond",1185],["2090 Diamond",1340],
+["2530 Diamond",1580],["3010 Diamond",1890],
+["4010 Diamond",2525],["5060 Diamond",3160]
+];
+let selected=0,payment="Nagad";
+const grid=document.getElementById("packages");
+packs.forEach((p,i)=>{
+ const b=document.createElement("button");
+ b.className="pack"+(i===0?" active":"");
+ b.innerHTML="<b>💎 "+p[0]+"</b><div class='price'>৳"+p[1]+"</div>";
+ b.onclick=()=>{
+ selected=i;
+ document.querySelectorAll(".pack").forEach(x=>x.classList.remove("active"));
+ b.classList.add("active");update();
+ };
+ grid.appendChild(b);
+});
+document.querySelectorAll(".pay").forEach(b=>{
+ b.onclick=()=>{
+ payment=b.dataset.pay;
+ document.querySelectorAll(".pay").forEach(x=>x.classList.remove("active"));
+ b.classList.add("active");update();
+ };
+});
+function update(){
+ document.getElementById("summary").textContent=packs[selected][0]+" · ৳"+packs[selected][1]+" · "+payment;
+}
+document.getElementById("order").onclick=()=>{
+ const uid=document.getElementById("uid").value.trim();
+ const msg=document.getElementById("message");
+ if(!/^[0-9]{5,25}$/.test(uid)){
+ msg.textContent="দয়া করে সঠিক সংখ্যার Player UID লিখুন।";return;
+ }
+ msg.textContent="ডেমো অর্ডার: "+packs[selected][0]+", UID "+uid+". পেমেন্ট বা ডেলিভারি চালু নেই; কোনো টাকা নেওয়া হয়নি।";
+};
+update();
+</script>
+</body>
+</html>
+
